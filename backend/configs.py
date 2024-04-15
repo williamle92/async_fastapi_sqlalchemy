@@ -13,6 +13,9 @@ class Settings(BaseSettings):
     PG_DB: str
     PG_PORT: int
     PG_URI: Optional[URL] = Field(None)
+    SECRET_KEY: str
+    SALT: str
+    ALGORITHM: str
 
     @field_validator("PG_URI", mode="after")
     def create_db_url(cls, value: Optional[URL], values: ValidationInfo):
