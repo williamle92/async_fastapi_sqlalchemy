@@ -21,6 +21,10 @@ alembic = "^1.13.1"
 asyncpg = "^0.29.0"
 greenlet = "^3.0.3"
 pydantic = {extras = ["email"], version = "^2.7.0"}
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = "^1.7.4"
+python-multipart = "^0.0.9"
+bcrypt = "4.0.1"
 
 
 [build-system]
