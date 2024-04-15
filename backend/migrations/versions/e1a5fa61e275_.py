@@ -34,7 +34,12 @@ def upgrade() -> None:
         sa.Column("first_name", sa.String(), nullable=False),
         sa.Column("last_name", sa.String(), nullable=False),
         sa.Column("phone_number", sa.String(length=20), nullable=False),
-        sa.Column("phone_country_code", sa.String(length=10), nullable=False),
+        sa.Column(
+            "phone_country_code",
+            sa.String(length=10),
+            server_default="1",
+            nullable=False,
+        ),
         sa.Column("hashed_password", sa.String(), nullable=False),
         sa.Column(
             "permission",
@@ -43,7 +48,9 @@ def upgrade() -> None:
         ),
         sa.PrimaryKeyConstraint("id"),
     )
+    op.create_index(op.f("ix_users_email"), "users", ["email"], unique=True)
     op.create_index(op.f("ix_users_id"), "users", ["id"], unique=False)
+
     # ### end Alembic commands ###
 
 
