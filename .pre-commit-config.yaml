@@ -11,3 +11,11 @@ repos:
     -   id: ruff
         args: [--fix]
     -   id: ruff-format
+-   repo: local
+    hooks:
+      - id: poetry-export
+        name: requirements
+        language: system
+        entry: poetry export --format=requirements.txt --without-hashes --output=requirements.txt
+        files: (^)requirements\.txt|poetry.lock|pyproject.toml|.pre-commit-config.yaml
+        pass_filenames: false
