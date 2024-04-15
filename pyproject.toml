@@ -25,6 +25,7 @@ python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 passlib = "^1.7.4"
 python-multipart = "^0.0.9"
 bcrypt = "4.0.1"
+redis = "^5.0.3"
 
 
 [build-system]
@@ -43,10 +44,18 @@ docstring-code-line-length = 40
 [tool.taskipy.tasks]
 staging = "dotenv --file .staging.env run"
 staging-python = "dotenv --file .staging.env run python"
+
+# Migrations
 generate-migrations = "dotenv --file .staging.env run alembic revision --autogenerate"
 commit-migrations = "dotenv --file .staging.env run alembic upgrade head"
 rollback-migrations = "dotenv --file .staging.env run alembic downgrade -1"
+
+# API
 app = "dotenv --file .staging.env run uvicorn backend.main:app --reload"
 
 # Production
 production = "dotenv --file .production.env run"
+
+
+# Worker
+worker = "celery -A backend.worker.tasks worker --loglevel=INFO"
