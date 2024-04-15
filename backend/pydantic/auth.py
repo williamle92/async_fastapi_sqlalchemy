@@ -12,7 +12,6 @@ class OAuthRequestForm:
     """
     https://fastapi.tiangolo.com/tutorial/security/simple-oauth2/
 
-
     """
 
     def __init__(self, username: str = Form(), password: str = Form()):
