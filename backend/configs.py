@@ -7,15 +7,15 @@ from sqlalchemy import URL
 
 
 class Settings(BaseSettings):
-    PG_HOST: str
-    PG_USER: str
-    PG_PASSWORD: str
-    PG_DB: str
-    PG_PORT: int
+    PG_HOST: Optional[str] = Field("localhost", env="PG_HOST")
+    PG_USER: Optional[str] = Field("postgres", env="PG_USER")
+    PG_PASSWORD: Optional[str] = Field("password", env="PG_PASSWORD")
+    PG_DB: Optional[str] = Field("hyperion", env="PG_DB")
+    PG_PORT: Optional[int] = Field(5432, env="PG_PORT")
     PG_URI: Optional[URL] = Field(None)
-    SECRET_KEY: str
-    SALT: str
-    ALGORITHM: str
+    SECRET_KEY: Optional[str] = Field("1234", env="SECRET_KEY")
+    SALT: Optional[str] = Field("I SEE DEAD PEOPLE", env="SALT")
+    ALGORITHM: Optional[str] = Field("HS256")
 
     @field_validator("PG_URI", mode="after")
     def create_db_url(cls, value: Optional[URL], values: ValidationInfo):
