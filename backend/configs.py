@@ -7,7 +7,7 @@ from sqlalchemy import URL
 
 
 class Settings(BaseSettings):
-    PG_HOST: Optional[str] = Field("localhost", env="PG_HOST")
+    PG_HOST: Optional[str] = Field("db", env="PG_HOST")
     PG_USER: Optional[str] = Field("postgres", env="PG_USER")
     PG_PASSWORD: Optional[str] = Field("password", env="PG_PASSWORD")
     PG_DB: Optional[str] = Field("hyperion", env="PG_DB")
@@ -19,14 +19,15 @@ class Settings(BaseSettings):
 
     @field_validator("PG_URI", mode="after")
     def create_db_url(cls, value: Optional[URL], values: ValidationInfo):
-        value: URL = URL.create(
-            "postgresql+asyncpg",
-            values.data.get("PG_USER"),
-            values.data.get("PG_PASSWORD"),
-            values.data.get("PG_HOST"),
-            values.data.get("PG_PORT"),
-            values.data.get("PG_DB"),
-        )
+        # URL hashes the password
+        # value: URL = URL.create(
+        #     "postgresql+asyncpg",
+        #     values.data.get("PG_USER"),
+        #     values.data.get("PG_PASSWORD"),
+        #     values.data.get("PG_HOST"),
+        #     values.data.get("PG_PORT"),
+        # )
+        value = f"postgresql+asyncpg://{values.data.get('PG_USER')}:{values.data.get('PG_PASSWORD')}@{values.data.get('PG_HOST')}:{values.data.get('PG_PORT')}"
         return value
 
 
