@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     SECRET_KEY: Optional[str] = Field("1234", env="SECRET_KEY")
     SALT: Optional[str] = Field("I SEE DEAD PEOPLE", env="SALT")
     ALGORITHM: Optional[str] = Field("HS256")
+    REDIS_HOST: Optional[str] = Field("redis", env="REDIS_HOST")
 
     @field_validator("PG_URI", mode="after")
     def create_db_url(cls, value: Optional[URL], values: ValidationInfo):
