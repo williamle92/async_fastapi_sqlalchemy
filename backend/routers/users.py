@@ -10,12 +10,10 @@ from sqlalchemy.engine.cursor import CursorResult
 from sqlalchemy.engine.row import Row
 
 
-router: APIRouter = APIRouter()
+router: APIRouter = APIRouter(tags=["Users"])
 
 
-@router.get(
-    "/users",
-)
+@router.get("/users")
 async def get_users(
     eng: AsyncEngine = Depends(get_connection),
     verified_user: User = Depends(verify_token),

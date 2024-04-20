@@ -7,7 +7,7 @@ from backend.pydantic.auth import RegisterIn, RegisterOut
 from sqlalchemy.ext.asyncio import AsyncEngine
 from backend.dependencies.auth import verify_password_hash, create_token, hash_password
 
-router: APIRouter = APIRouter()
+router: APIRouter = APIRouter(tags=["Auth"])
 
 
 @router.post("/token", response_model=Token, status_code=200)
