@@ -13,7 +13,7 @@ from alembic import context
 # access to the values within the .ini file in use.
 config = context.config
 
-db_url: str = Configs.PG_URI.__to_string__(hide_password=False)
+db_url: str = Configs.PG_URI.__to_string__(hide_password=False).replace("%21", "!")
 config.set_main_option("sqlalchemy.url", db_url)
 
 # Interpret the config file for Python logging.
