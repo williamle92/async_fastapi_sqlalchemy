@@ -13,6 +13,10 @@ ENV PYTHONUNBUFFERED=1
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 WORKDIR /app
+
+# Copy the source code into the container.
+COPY . .
+
 RUN apt-get update && apt-get install -y gcc
 RUN pip install --upgrade pip
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -41,11 +45,9 @@ RUN adduser \
 # Switch to the non-privileged user to run the application.
 USER appuser
 
-# Copy the source code into the container.
-COPY . .
 
 # Expose the port that the application listens on.
 EXPOSE 8000
 
 # Run the application.
-CMD uvicorn backend.main:app --reload
+CMD uvicorn backend.main:app --reload --host 0.0.0.0
