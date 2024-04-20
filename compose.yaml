@@ -20,7 +20,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=${PG_PASSWORD}
     ports:
-      - "5432:5432"
+      - "5433:5432"
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       interval: 10s
@@ -29,8 +29,12 @@ services:
   server:
     build:
       context: .
-    ports:
-      - 8000:8000
+    labels:
+      - "traefik.enable=true"
+      #  configuring Traefik to route HTTP traffic with the host header hyperion.com to the container named server
+      - traefik.http.routers.server.rule=Host(`hyperion.localhost`)
+      # We use local
+      - traefik.http.services.service.loadbalancer.server.port=8000
     env_file:
       - .env
 # The commented out section below is an example of how to define a PostgreSQL
@@ -42,6 +46,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      traefik:
+        condition: service_started
   redis:
     image: redis
     ports:
@@ -60,12 +66,5 @@ services:
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-
-  whoami:
-    image: "traefik/whoami"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
-      - "traefik.http.routers.whoami.entrypoints=web"
 volumes:
   db-data:
